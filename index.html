@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+        .app {
+            max-width: 400px;
+            margin: 0px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .summ {
+            font-size: 3em;
+            padding: 50px 0px 0px 0px;
+            grid-column-start: span 2;
+            text-align: center;
+        }
+        .plus, .minus {
+            min-width: 100px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        input {
+            margin-bottom: 30px;
+        }
+        .app-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .app-btn button {
+            width: 60px;
+            height: 60px;
+            background: none;
+            border: 2px solid #000;
+            display: block;
+            margin: 0px 2px;
+        }
+        .balance {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            grid-template-rows: auto;
+        }
+    </style>
+
+    <div class="app"></div>
+
+    <script>
+        const app = document.querySelector('.app');
+        const buttonPlus = document.createElement('button');
+        const buttonMinus = document.createElement('button');
+        const input = document.createElement('input');
+        const summ = document.createElement('div');
+        const buttons = document.createElement('div');
+        const plus = document.createElement('div'); plus.classList.add('plus');
+        const minus = document.createElement('div'); minus.classList.add('minus');
+        const balance = document.createElement('div'); balance.classList.add('balance');
+        summ.classList.add('summ');
+        buttons.classList.add('app-btn')
+        buttonPlus.innerHTML = '+';
+        buttonMinus.innerHTML = '-';
+        
+        balance.prepend(summ, plus, minus)
+        app.prepend(balance, input);
+        app.append(buttons);
+        buttons.append(buttonPlus, buttonMinus);
+        function appSumm(key, value) {
+            localStorage.setItem(key, +localStorage.getItem(key) + value);
+        };
+        function appMath(key, value) {
+            localStorage.setItem(key, value);
+        }
+
+        buttonPlus.addEventListener('click', () => {
+            appSumm('summ', parseInt(input.value));
+            appSumm('plus', parseInt(input.value));
+            summ.innerHTML = +localStorage.getItem('summ');
+            plus.innerHTML = +localStorage.getItem('plus');
+        });
+        buttonMinus.addEventListener('click', () => {
+            appSumm('summ', - parseInt(input.value));
+            appSumm('minus', parseInt(input.value));
+            summ.innerHTML = +localStorage.getItem('summ');
+            minus.innerHTML = +localStorage.getItem('minus');
+        });
+        if (localStorage.getItem('summ') === null) {
+            summ.innerHTML = parseInt(0);
+        } else {
+            summ.innerHTML = localStorage.getItem('summ');
+        };
+        if (localStorage.getItem('plus') === null) {
+            plus.innerHTML = parseInt(0);
+        } else {
+            plus.innerHTML = localStorage.getItem('plus');
+        };
+        if (localStorage.getItem('minus') === null) {
+            minus.innerHTML = parseInt(0);
+        } else {
+            minus.innerHTML = localStorage.getItem('minus');
+        };
+        input.addEventListener('click', () => {
+            input.value = '';
+        })
+
+    </script>
+</body>
+</html>
